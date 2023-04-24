@@ -3,12 +3,14 @@ import professores
 import disciplinas
 import turmas
 import matriculas
+import alunos
 def menu():
     print('Selecione um módulo')
     print('[1] Professores')
     print('[2] Diciplinas')
     print('[3] Turmas')
     print('[4] Matrículas')
+    print('[5] Alunos')
     print('[0] Sair')
 
 def submenu():
@@ -77,6 +79,20 @@ while op != 0:
             matriculas.editar()
         elif subop == 4:
             matriculas.apagar()
+        else :
+            print('Escolha invalida')
+    elif op == 5:
+        print('Alunos')
+        submenu()
+        subop = int(input())
+        if subop == 1:
+            alunos.cadastrar()
+        elif subop ==2:
+            alunos.visualizar()
+        elif subop == 3: 
+            alunos.editar()
+        elif subop == 4:
+            alunos.apagar()
         else :
             print('Escolha invalida')
     else:
