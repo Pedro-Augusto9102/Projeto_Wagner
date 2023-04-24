@@ -1,6 +1,20 @@
 import json
 import os
 
+def validaMatricula(id):
+    if os.path.isfile('./data_matriculas.json'):
+        with open('data_matriculas.json', 'r', encoding='utf-8') as f:
+            my_data = json.load(f)
+            data_arr = my_data
+    else:
+        return True
+    
+    for index in range(len(data_arr)):
+        for key in data_arr[index]:
+            if data_arr[index]['Codigo do estudante'] == id:
+                return False
+    return True
+
 def cadastrar():
     data_arr = []
     print('Cadastrar\n\n')
@@ -21,26 +35,36 @@ def cadastrar():
             'Codigo da turma':codigo_da_dscipina,
             'Codigo do estudante':codigo_do_estudante,
             })
-        data_arr.append(data_raw)
-        with open ('data_matriculas.json', "w") as f:
-            json.dump(data_arr, f)
-            print('Cadastro efetuado')
+        valida = validaMatricula(codigo_do_estudante)
+        if valida:
+            data_arr.append(data_raw)
+            with open ('data_matriculas.json', "w") as f:
+                json.dump(data_arr, f)
+                print('Cadastro efetuado')
+        else: 
+            print('Matricula ja cadastrada')
         cad = False
 
 def visualizar():
-    if os.path.isfile('./data_prof.json') == False:
+    if os.path.isfile('./data_matriculas.json') == False:
         print('Nada cadastrado')
     else:
         print('Visualizar\n\n')
 
         with open('data_matriculas.json', 'r', encoding='utf-8') as f:
-            my_data = json.load(f)
-            print(my_data)
+            data_arr = json.load(f)
+            i = 1
+            for index in data_arr:  
+                print('Item :'+str(i))              
+                print('Codigo da turma: '+str(index['Codigo da turma']))                  
+                print('Codigo do estudante: '+str(index['Codigo do estudante']))              
+                print('\n\n')
+                i+=1
 
 
 def editar():
     print('Editar')
-    if os.path.isfile('./data_prof.json') == False:
+    if os.path.isfile('./data_matriculas.json') == False:
         print('Nada cadastrado')
     else:
         data = []
@@ -54,13 +78,15 @@ def editar():
         
         for i in range(len(my_data)):
             if my_data[i]['Codigo da turma'] == op:
-                print(my_data[i])
-                del my_data[i]
-                print(my_data)
+                codigo_da_turma = int(input("Codigo da turma\n"))
+                codigo_do_estudante = input("Codigo do estudante\n")
+              
+                
+                my_data[i]['Codigo da turma'] = codigo_da_turma
+                my_data[i]['Codigo do estudante'] = codigo_do_estudante
                 with open ('data_matriculas.json', "w") as f:
                     json.dump(my_data, f)
-                print('Atualizar cadastro:\n')
-                cadastrar()
+                
                 break
 
 def apagar():
